@@ -6,7 +6,7 @@
 /*   By: scavalli <scavalli@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 19:53:31 by scavalli          #+#    #+#             */
-/*   Updated: 2025/03/30 18:16:47 by scavalli         ###   ########.fr       */
+/*   Updated: 2025/05/08 12:07:11 by scavalli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,10 @@ void	sort_turk(t_stack **stack_a, t_stack **stack_b)
 {
 	int	len_a;
 
+	transfer_by_quartiles(stack_a, stack_b);
 	len_a = stack_size(*stack_a);
-	if (len_a-- > 3 && !check_if_sorted(*stack_a))
+	while (len_a-- > 3 && !check_if_sorted(*stack_a))
 		pb(stack_a, stack_b);
-	if (len_a > 3 && !check_if_sorted(*stack_a))
-		pb(stack_a, stack_b);
-	while (len_a-- > 4 && !check_if_sorted(*stack_a))
-	{
-		node_initiation_a(*stack_a, *stack_b);
-		move_a_to_b(stack_a, stack_b);
-	}
 	sort_three(stack_a);
 	while (*stack_b)
 	{

@@ -6,7 +6,7 @@
 /*   By: scavalli <scavalli@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 17:27:08 by scavalli          #+#    #+#             */
-/*   Updated: 2025/04/02 22:08:51 by scavalli         ###   ########.fr       */
+/*   Updated: 2025/05/08 12:06:11 by scavalli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,4 @@ unsigned int	stack_size(t_stack *stack_a)
 		stack_a = stack_a->next;
 	}
 	return (size);
-}
-
-void	display_stack(t_stack *stack)
-{
-	while (stack)
-	{
-		ft_printf("%d\n", stack->content);
-		stack = stack->next;
-	}
 }

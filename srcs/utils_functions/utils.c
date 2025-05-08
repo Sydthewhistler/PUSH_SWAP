@@ -6,11 +6,26 @@
 /*   By: scavalli <scavalli@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 17:18:41 by scavalli          #+#    #+#             */
-/*   Updated: 2025/03/25 16:36:20 by scavalli         ###   ########.fr       */
+/*   Updated: 2025/05/08 16:30:19 by scavalli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/header.h"
+
+int	free_lst(t_stack *filtered_list, t_stack *temp, t_stack *new_node)
+{
+	if (!new_node)
+	{
+		while (filtered_list)
+		{
+			temp = filtered_list;
+			filtered_list = filtered_list->next;
+			free(temp);
+		}
+		return (-1);
+	}
+	return (0);
+}
 
 int	ft_strcmp(const char *s1, const char *s2)
 {

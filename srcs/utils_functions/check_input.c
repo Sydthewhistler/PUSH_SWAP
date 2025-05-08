@@ -6,7 +6,7 @@
 /*   By: scavalli <scavalli@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 11:51:12 by scavalli          #+#    #+#             */
-/*   Updated: 2025/03/25 16:36:10 by scavalli         ###   ########.fr       */
+/*   Updated: 2025/05/08 16:31:47 by scavalli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,14 @@ static int	ft_nb_is_int(const char *str)
 	return (0);
 }
 
-static int	check_duplicate(char **av)
+static int	check_duplicate(char **av, int ac)
 {
 	int	i;
 	int	j;
 
 	i = 1;
+	if (ac == 2)
+		i = 0;
 	j = 0;
 	while (av[i])
 	{
@@ -58,12 +60,14 @@ static int	check_duplicate(char **av)
 	return (0);
 }
 
-int	check_av(char **av)
+int	check_av(char **av, int ac)
 {
 	int	i;
 	int	j;
 
 	i = 1;
+	if (ac == 2)
+		i = 0;
 	while (av[i])
 	{
 		j = 0;
@@ -77,7 +81,7 @@ int	check_av(char **av)
 			return (-1);
 		i++;
 	}
-	if (check_duplicate(av) == -1)
+	if (check_duplicate(av, ac) == -1)
 		return (-1);
 	return (0);
 }

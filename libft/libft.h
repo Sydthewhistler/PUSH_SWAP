@@ -6,18 +6,19 @@
 /*   By: scavalli <scavalli@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 22:09:32 by scavalli          #+#    #+#             */
-/*   Updated: 2025/04/01 12:10:43 by scavalli         ###   ########.fr       */
+/*   Updated: 2025/05/08 12:37:43 by scavalli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# include "header_printf.h" // PRINTF
+# include <stdbool.h>
+# include <stdint.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdint.h>
-# include "header_printf.h" // PRINTF
 
 int					ft_isalpha(int c);
 int					ft_isdigit(int c);
@@ -45,7 +46,7 @@ int					ft_atoi(const char *str);
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *s1, char const *set);
-char				**ft_split(char const *s, char c);
+char				**ft_split(char *s, char *charset);
 char				*ft_itoa(int n);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void				ft_putchar_fd(char c, int fd);
