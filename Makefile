@@ -1,58 +1,48 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: scavalli <scavalli@student.42nice.fr>      +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/03/13 12:53:00 by scavalli          #+#    #+#              #
-#    Updated: 2025/05/08 16:35:39 by scavalli         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+# push_swap — stack-sorting program
+# Usage: make [all | clean | fclean | re]
 
-NAME = push_swap
-LIBFT = ./libft/libft.a
-INC = inc/
-SRC_DIR = srcs/
-OBJ_DIR = obj/
-CC = clang
-CFLAGS = -Wall -Werror -Wextra -g3
-RM = rm -f
+NAME    := push_swap
+LIBFT   := ./libft/libft.a
 
-COMMANDS_FILE = $(wildcard $(SRC_DIR)commands/*.c)
-UTILS_FUNCTIONS_FILE = $(wildcard $(SRC_DIR)utils_functions/*.c)
-ALGORITHM_FILE = $(wildcard $(SRC_DIR)algorithm/*.c)
+CC      := clang
+CFLAGS  := -Wall -Wextra -Werror -g3
 
-SRCS = $(COMMANDS_FILE) $(UTILS_FUNCTIONS_FILE) $(ALGORITHM_FILE)
+INC     := inc/
+SRC_DIR := srcs/
+OBJ_DIR := obj/
 
-OBJ = $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
+RM      := rm -rf
 
-start:
-	@make all
+SRCS    := $(wildcard $(SRC_DIR)algorithm/*.c)       \
+           $(wildcard $(SRC_DIR)commands/*.c)         \
+           $(wildcard $(SRC_DIR)utils_functions/*.c)
 
-$(LIBFT):
-	@make -C ./libft
+OBJS    := $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRCS))
+
+# ─── Targets ──────────────────────────────────────────────────────────────────
+
+.PHONY: all clean fclean re
 
 all: $(NAME)
-	@echo "\n\e[32mall files compiled\e[0m\n"
 
-$(NAME): $(OBJ) $(LIBFT)
-	$(CC) $(CFLAGS) -I$(INC) $(OBJ) $(LIBFT) -o $(NAME)
+$(NAME): $(OBJS) $(LIBFT)
+	$(CC) $(CFLAGS) -I$(INC) $^ -o $@
+	@printf "\033[32m[OK]\033[0m %s built successfully\n" $(NAME)
+
+$(LIBFT):
+	@$(MAKE) -C ./libft --no-print-directory
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -I$(INC) -c $< -o $@
+	@$(CC) $(CFLAGS) -I$(INC) -c $< -o $@
 
 clean:
-	@$(RM) -r $(OBJ_DIR)
-	@make clean -C ./libft
+	@$(RM) $(OBJ_DIR)
+	@$(MAKE) clean -C ./libft --no-print-directory
+	@printf "\033[33m[clean]\033[0m object files removed\n"
 
 fclean: clean
-	@$(RM) $(NAME)
-	@$(RM) $(LIBFT)
+	@$(RM) $(NAME) $(LIBFT)
+	@printf "\033[33m[fclean]\033[0m binaries removed\n"
 
 re: fclean all
-
-make restart : fclean start
-
-.PHONY: start all clean fclean re

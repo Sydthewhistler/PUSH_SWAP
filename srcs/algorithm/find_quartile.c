@@ -1,90 +1,73 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   find_quartile.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: scavalli <scavalli@student.42nice.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/08 16:17:15 by scavalli          #+#    #+#             */
-/*   Updated: 2025/05/08 16:30:04 by scavalli         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/* find_quartile.c - quartile computation and pre-sort push to B */
 
 #include "../../inc/header.h"
 
-void	fill_stack(t_stack **filtered_list, t_stack *new_node)
+static void	list_append_node(t_stack **list, t_stack *node)
 {
-	t_stack	*temp;
+	t_stack	*tail;
 
-	if (!*filtered_list)
-		*filtered_list = new_node;
-	else
+	if (!*list)
 	{
-		temp = *filtered_list;
-		while (temp->next)
-			temp = temp->next;
-		temp->next = new_node;
+		*list = node;
+		return ;
 	}
+	for (tail = *list; tail->next; tail = tail->next)
+		;
+	tail->next = node;
 }
 
-t_stack	*ft_create_filtered_list(t_stack *lst, int median, int is_upper)
+static t_stack	*create_filtered_list(t_stack *lst, int median, int is_upper)
 {
-	t_stack	*filtered_list;
-	t_stack	*current;
-	t_stack	*new_node;
-	t_stack	*temp;
+	t_stack	*filtered;
+	t_stack	*node;
 
-	filtered_list = NULL;
-	temp = NULL;
-	current = lst;
-	while (current)
+	filtered = NULL;
+	for (; lst; lst = lst->next)
 	{
-		if ((is_upper && current->content > median) || (!is_upper
-				&& current->content < median))
+		if ((is_upper && lst->content > median)
+			|| (!is_upper && lst->content < median))
 		{
-			new_node = (t_stack *)malloc(sizeof(t_stack));
-			if (free_lst(filtered_list, temp, new_node) == -1)
+			node = malloc(sizeof(t_stack));
+			if (list_free_on_error(filtered, node) == -1)
 				return (NULL);
-			new_node->content = current->content;
-			new_node->next = NULL;
-			fill_stack(&filtered_list, new_node);
+			node->content = lst->content;
+			node->next = NULL;
+			list_append_node(&filtered, node);
 		}
-		current = current->next;
 	}
-	return (filtered_list);
+	return (filtered);
 }
 
 int	find_quartile(t_stack *lst, int median, int is_upper)
 {
-	t_stack	*filtered_list;
-	t_stack	*current;
-	t_stack	*temp;
+	t_stack	*filtered;
+	t_stack	*tmp;
 	int		quartile;
 
-	filtered_list = ft_create_filtered_list(lst, median, is_upper);
-	if (!filtered_list)
+	filtered = create_filtered_list(lst, median, is_upper);
+	if (!filtered)
 		return (0);
-	quartile = find_median(filtered_list);
-	current = filtered_list;
-	while (current)
+	quartile = find_median(filtered);
+	while (filtered)
 	{
-		temp = current;
-		current = current->next;
-		free(temp);
+		tmp = filtered;
+		filtered = filtered->next;
+		free(tmp);
 	}
 	return (quartile);
 }
 
-void	transfer_lower_quartiles(t_stack **a, t_stack **b, int q1, int median)
+static void	push_lower_quartiles(t_stack **a, t_stack **b,
+				int q1, int median)
 {
-	while (stack_size(*a) > 3 && number_under_median(*a, q1))
+	while (stack_size(*a) > 3 && has_value_below(*a, q1))
 	{
 		if ((*a)->content < q1)
 			pb(a, b);
 		else
 			ra(a);
 	}
-	while (stack_size(*a) > 3 && number_under_median(*a, median))
+	while (stack_size(*a) > 3 && has_value_below(*a, median))
 	{
 		if ((*a)->content >= q1 && (*a)->content < median)
 			pb(a, b);
@@ -93,7 +76,7 @@ void	transfer_lower_quartiles(t_stack **a, t_stack **b, int q1, int median)
 	}
 }
 
-void	transfer_by_quartiles(t_stack **a, t_stack **b)
+void	push_by_quartiles(t_stack **a, t_stack **b)
 {
 	int	q1;
 	int	median;
@@ -104,8 +87,8 @@ void	transfer_by_quartiles(t_stack **a, t_stack **b)
 	median = find_median(*a);
 	q1 = find_quartile(*a, median, LOWER_QUARTILE);
 	q3 = find_quartile(*a, median, UPPER_QUARTILE);
-	transfer_lower_quartiles(a, b, q1, median);
-	while (stack_size(*a) > 3 && number_under_median(*a, q3))
+	push_lower_quartiles(a, b, q1, median);
+	while (stack_size(*a) > 3 && has_value_below(*a, q3))
 	{
 		if ((*a)->content >= median && (*a)->content < q3)
 			pb(a, b);

@@ -1,68 +1,52 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   stack_functions.c                                  :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: scavalli <scavalli@student.42nice.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/15 17:27:08 by scavalli          #+#    #+#             */
-/*   Updated: 2025/05/08 12:06:11 by scavalli         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/* stack_functions.c - stack allocation, deallocation and size */
 
 #include "../../inc/header.h"
 
-void	ft_lst_add_new_last(t_stack **stack, int content)
+void	stack_push_back(t_stack **stack, int content)
 {
 	t_stack	*node;
-	t_stack	*last_node;
+	t_stack	*last;
 
 	if (!stack)
 		return ;
 	node = malloc(sizeof(t_stack));
 	if (!node)
 		return ;
-	node->next = NULL;
 	node->content = content;
-	node->cheapest = 0;
-	if (!(*stack))
+	node->next = NULL;
+	node->cheapest = false;
+	if (!*stack)
 	{
-		*stack = node;
 		node->previous = NULL;
+		*stack = node;
 	}
 	else
 	{
-		last_node = find_last(*stack);
-		last_node->next = node;
-		node->previous = last_node;
+		last = find_last(*stack);
+		last->next = node;
+		node->previous = last;
 	}
 }
 
-void	ft_lstclear_stack(t_stack **lst)
+void	stack_free(t_stack **lst)
 {
-	t_stack	*copy;
+	t_stack	*tmp;
 
-	if (!*lst || !lst)
+	if (!lst || !*lst)
 		return ;
 	while (*lst)
 	{
-		copy = *lst;
+		tmp = *lst;
 		*lst = (*lst)->next;
-		free(copy);
+		free(tmp);
 	}
 }
 
-unsigned int	stack_size(t_stack *stack_a)
+unsigned int	stack_size(t_stack *stack)
 {
-	int	size;
+	unsigned int	size;
 
-	if (!stack_a)
-		return (0);
-	size = 0;
-	while (stack_a)
-	{
+	for (size = 0; stack; stack = stack->next)
 		size++;
-		stack_a = stack_a->next;
-	}
 	return (size);
 }

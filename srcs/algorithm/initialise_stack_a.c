@@ -1,26 +1,9 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   initialise_stack_a.c                               :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: scavalli <scavalli@student.42nice.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/15 17:04:10 by scavalli          #+#    #+#             */
-/*   Updated: 2025/05/08 12:06:54 by scavalli         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/* initialise_stack_a.c - populate stack A from argument list */
 
 #include "../../inc/header.h"
 
-void	initialise_stack_a(char **av, t_stack **stack_a)
+void	stack_a_init(char **av, t_stack **stack_a)
 {
-	unsigned int	i;
-
-	i = 0;
-	while (av[i])
-	{
-		ft_lst_add_new_last(stack_a, ft_atoi(av[i]));
-		i++;
-	}
-	return ;
+	for (int i = 0; av[i]; i++)
+		stack_push_back(stack_a, ft_atoi(av[i]));
 }

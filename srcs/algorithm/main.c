@@ -1,45 +1,32 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: scavalli <scavalli@student.42nice.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/13 11:00:03 by scavalli          #+#    #+#             */
-/*   Updated: 2025/05/08 16:31:39 by scavalli         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/* main.c - entry point, argument parsing */
 
 #include "../../inc/header.h"
 
-void	ft_free_tab(char **tab)
+static void	free_split(char **tab)
 {
-	int	i;
-
-	i = 0;
-	while (tab[i])
-	{
+	for (int i = 0; tab[i]; i++)
 		free(tab[i]);
-		i++;
-	}
 	free(tab);
 }
 
 int	main(int ac, char **av)
 {
+	bool	split_mode;
+
 	if (ac < 2 || (ac == 2 && !av[1][0]))
 		return (-1);
-	if (ac == 2)
+	split_mode = (ac == 2);
+	if (split_mode)
 		av = ft_split(av[1], " ");
-	if (check_av(av, ac) == -1)
+	if (validate_args(av, ac) == -1)
 	{
 		ft_printf("Error\n");
-		if (ac == 2)
-			ft_free_tab(av);
+		if (split_mode)
+			free_split(av);
 		return (-1);
 	}
 	algorithm(av, ac);
-	if (ac == 2)
-		ft_free_tab(av);
+	if (split_mode)
+		free_split(av);
 	return (0);
 }

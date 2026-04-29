@@ -1,40 +1,20 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   push_under_median.c                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: scavalli <scavalli@student.42nice.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 14:06:07 by scavalli          #+#    #+#             */
-/*   Updated: 2025/05/08 12:07:06 by scavalli         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/* push_under_median.c - compute the median value of a stack */
 
 #include "../../inc/header.h"
 
 static void	fill_array(int *arr, t_stack *stack, int size)
 {
-	int	i;
-
-	i = 0;
-	while (i < size)
-	{
-		arr[i++] = stack->content;
-		stack = stack->next;
-	}
+	for (int i = 0; i < size; i++, stack = stack->next)
+		arr[i] = stack->content;
 }
 
 static void	sort_array(int *arr, int size)
 {
-	int	i;
-	int	j;
 	int	tmp;
 
-	i = -1;
-	while (++i < size)
+	for (int i = 0; i < size; i++)
 	{
-		j = i;
-		while (++j < size)
+		for (int j = i + 1; j < size; j++)
 		{
 			if (arr[i] > arr[j])
 			{
@@ -48,15 +28,14 @@ static void	sort_array(int *arr, int size)
 
 int	find_median(t_stack *stack)
 {
+	t_stack	*tmp;
+	int		*arr;
 	int		size;
 	int		median;
-	int		*arr;
-	t_stack	*tmp;
 
 	size = 0;
-	tmp = stack;
-	while (tmp && ++size)
-		tmp = tmp->next;
+	for (tmp = stack; tmp; tmp = tmp->next)
+		size++;
 	if (size == 0)
 		return (0);
 	arr = malloc(sizeof(int) * size);
@@ -69,13 +48,12 @@ int	find_median(t_stack *stack)
 	return (median);
 }
 
-bool	number_under_median(t_stack *stack, int median)
+bool	has_value_below(t_stack *stack, int threshold)
 {
-	while (stack)
+	for (; stack; stack = stack->next)
 	{
-		if (stack->content < median)
+		if (stack->content < threshold)
 			return (true);
-		stack = stack->next;
 	}
 	return (false);
 }

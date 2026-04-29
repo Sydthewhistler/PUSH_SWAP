@@ -1,34 +1,17 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   reverse_rotate.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: scavalli <scavalli@student.42nice.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/24 17:57:15 by scavalli          #+#    #+#             */
-/*   Updated: 2025/03/27 13:29:50 by scavalli         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/* reverse_rotate.c - rra, rrb, rrr: shift stack downward (bottom → top) */
 
 #include "../../inc/header.h"
 
-void	rrr(t_stack **stack_from, t_stack **stack_to)
-{
-	reverse_rotate(stack_from);
-	reverse_rotate(stack_to);
-	ft_printf("rrr\n");
-}
-
 void	reverse_rotate(t_stack **stack)
 {
-	t_stack	*last_node;
+	t_stack	*last;
 
-	last_node = find_last(*stack);
-	last_node->previous->next = NULL;
-	last_node->next = *stack;
-	last_node->previous = NULL;
-	*stack = last_node;
-	last_node->next->previous = last_node;
+	last = find_last(*stack);
+	last->previous->next = NULL;
+	last->next = *stack;
+	last->previous = NULL;
+	*stack = last;
+	last->next->previous = last;
 }
 
 void	rra(t_stack **stack)
@@ -41,4 +24,11 @@ void	rrb(t_stack **stack)
 {
 	reverse_rotate(stack);
 	ft_printf("rrb\n");
+}
+
+void	rrr(t_stack **a, t_stack **b)
+{
+	reverse_rotate(a);
+	reverse_rotate(b);
+	ft_printf("rrr\n");
 }

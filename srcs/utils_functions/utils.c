@@ -1,42 +1,36 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: scavalli <scavalli@student.42nice.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/03 17:18:41 by scavalli          #+#    #+#             */
-/*   Updated: 2025/05/08 16:30:19 by scavalli         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/* utils.c - allocation error handler and string equality */
 
 #include "../../inc/header.h"
 
-int	free_lst(t_stack *filtered_list, t_stack *temp, t_stack *new_node)
+/*
+ * If new_node is NULL (malloc failed), free the list built so far
+ * and return -1 to signal the caller to abort.
+ */
+int	list_free_on_error(t_stack *list, t_stack *new_node)
 {
+	t_stack	*tmp;
+
 	if (!new_node)
 	{
-		while (filtered_list)
+		while (list)
 		{
-			temp = filtered_list;
-			filtered_list = filtered_list->next;
-			free(temp);
+			tmp = list;
+			list = list->next;
+			free(tmp);
 		}
 		return (-1);
 	}
 	return (0);
 }
 
-int	ft_strcmp(const char *s1, const char *s2)
+/* Returns true if s1 and s2 are identical, false otherwise. */
+bool	str_equal(const char *s1, const char *s2)
 {
-	size_t	i;
-
-	i = 0;
-	while (s1[i] || s2[i])
+	for (size_t i = 0; ; i++)
 	{
 		if (s1[i] != s2[i])
-			return (1);
-		i++;
+			return (false);
+		if (!s1[i])
+			return (true);
 	}
-	return (0);
 }

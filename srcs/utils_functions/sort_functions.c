@@ -1,57 +1,39 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   sort_functions.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: scavalli <scavalli@student.42nice.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/15 17:42:30 by scavalli          #+#    #+#             */
-/*   Updated: 2025/05/08 12:07:20 by scavalli         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/* sort_functions.c - rotation helpers and find_last */
 
 #include "../../inc/header.h"
 
-void	prep_for_push(t_stack **stack, t_stack *top_node, bool which_stack)
+t_stack	*find_last(t_stack *stack)
 {
-	while (*stack != top_node)
+	if (!stack)
+		return (NULL);
+	for (; stack->next; stack = stack->next)
+		;
+	return (stack);
+}
+
+/* Rotate stack until node is on top, choosing the cheaper direction. */
+void	bring_node_to_top(t_stack **stack, t_stack *node, bool which_stack)
+{
+	while (*stack != node)
 	{
-		if (which_stack == STACK_A)
+		if (!which_stack)
 		{
-			if (top_node->position_from_median)
-				ra(stack);
-			else
-				rra(stack);
+			node->position_from_median ? ra(stack) : rra(stack);
 		}
-		else if (which_stack == STACK_B)
+		else
 		{
-			if (top_node->position_from_median)
-				rb(stack);
-			else
-				rrb(stack);
+			node->position_from_median ? rb(stack) : rrb(stack);
 		}
 	}
 }
 
-void	put_min_top(t_stack **top_node)
+void	rotate_min_to_top(t_stack **stack)
 {
 	t_stack	*min_node;
 
-	min_node = find_min(*top_node);
-	while (*top_node != min_node)
+	min_node = find_min(*stack);
+	while (*stack != min_node)
 	{
-		if (min_node->position_from_median)
-			ra(top_node);
-		else
-			rra(top_node);
+		min_node->position_from_median ? ra(stack) : rra(stack);
 	}
-}
-
-t_stack	*find_last(t_stack *stack)
-{
-	if (stack == NULL)
-		return (NULL);
-	while (stack->next)
-		stack = stack->next;
-	return (stack);
 }

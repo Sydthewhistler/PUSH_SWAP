@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/sydneycavallin/Documents/42/42_git/PUSH_SWAP/srcs/algorithm",
+      "program": "/Users/sydneycavallin/Documents/42/42_git/PUSH_SWAP/srcs/algorithm/build/Debug/outDebug"
+    }
+  ]
+}
