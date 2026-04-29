@@ -31,10 +31,7 @@ if [ ! -f "$BINARY" ]; then
     printf "\033[32m[OK]\033[0m Visualizer built\n"
 fi
 
-# ── 4. Symlink push_swap where the visualizer expects it ─────────
-# The binary resolves push_swap as ../../push_swap relative to
-# its own location (build/bin/ → push_swap_visualizer/push_swap).
-ln -sf "$ROOT/push_swap" "$SUBMODULE/push_swap"
-
-# ── 5. Launch ─────────────────────────────────────────────────────
-exec "$BINARY"
+# ── 4. Launch ─────────────────────────────────────────────────────
+# cd into build/ so that ../../push_swap resolves to the project root binary.
+cd "$BUILD_DIR"
+exec "./bin/visualizer"
