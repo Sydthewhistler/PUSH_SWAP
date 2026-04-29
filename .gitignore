@@ -1,0 +1,17 @@
+# ── Build artifacts ───────────────────────────────────────────────
+obj/
+*.o
+*.a
+*.out
+
+# ── Binaries ──────────────────────────────────────────────────────
+push_swap
+
+# ── Visualizer ────────────────────────────────────────────────────
+# symlink created at runtime by the ./visualizer script
+push_swap_visualizer/push_swap
+
+# ── OS / editor ───────────────────────────────────────────────────
+.DS_Store
+.vscode/
+*.swp
