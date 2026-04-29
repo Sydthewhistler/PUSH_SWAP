@@ -1,8 +1,9 @@
 # push_swap — stack-sorting program
-# Usage: make [all | clean | fclean | re]
+# Usage: make [all | clean | fclean | re | visual]
 
-NAME    := push_swap
-LIBFT   := ./libft/libft.a
+NAME            := push_swap
+LIBFT           := ./libft/libft.a
+VISUALIZER_DIR  := push_swap_visualizer
 
 CC      := clang
 CFLAGS  := -Wall -Wextra -Werror -g3
@@ -21,7 +22,7 @@ OBJS    := $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRCS))
 
 # ─── Targets ──────────────────────────────────────────────────────────────────
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re visual
 
 all: $(NAME)
 
@@ -43,6 +44,10 @@ clean:
 
 fclean: clean
 	@$(RM) $(NAME) $(LIBFT)
+	@$(RM) $(VISUALIZER_DIR)/build
 	@printf "\033[33m[fclean]\033[0m binaries removed\n"
 
 re: fclean all
+
+visual: all
+	@./visualizer

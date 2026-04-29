@@ -12,6 +12,7 @@ A stack sorting program written in C. Given a list of integers, **push_swap** ou
 - [Project Structure](#project-structure)
 - [Build](#build)
 - [Usage](#usage)
+- [Visualizer](#visualizer)
 - [Requirements](#requirements)
 
 ---
@@ -106,8 +107,9 @@ push_swap/
 |---|---|
 | `make` / `make all` | Build `push_swap` (compiles libft first) |
 | `make clean` | Remove object files (`obj/`) |
-| `make fclean` | `clean` + remove `push_swap` binary and `libft.a` |
+| `make fclean` | `clean` + remove binaries and visualizer build |
 | `make re` | Full rebuild (`fclean` + `all`) |
+| `make visual` | Build everything and launch the visualizer |
 
 ```bash
 # Standard build
@@ -147,6 +149,41 @@ The program writes `Error` to stdout and exits with status `-1` when:
 - A non-integer argument is provided
 - An integer is out of `INT` range
 - Duplicate values are present
+
+---
+
+## Visualizer
+
+A graphical visualizer is included as a git submodule ([o-reo/push_swap_visualizer](https://github.com/o-reo/push_swap_visualizer)).
+
+### First-time setup
+
+```bash
+# When cloning the repo for the first time:
+git clone --recurse-submodules <your-repo-url>
+
+# Or if already cloned without submodules:
+git submodule update --init --recursive
+```
+
+### Launch
+
+```bash
+./visualizer        # builds everything on first run, then opens the GUI
+```
+
+The script automatically builds `push_swap` and the visualizer if not already compiled. Subsequent runs open the GUI directly.
+
+```bash
+make visual         # equivalent shorthand via make
+```
+
+### Updating the visualizer
+
+```bash
+cd push_swap_visualizer && git pull origin master
+cd .. && git add push_swap_visualizer && git commit -m "Update visualizer submodule"
+```
 
 ---
 

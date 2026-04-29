@@ -1,0 +1,35 @@
+#!/bin/bash
+# visualizer - build (if needed) and launch the push_swap visualizer
+
+set -e
+
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+SUBMODULE="$ROOT/push_swap_visualizer"
+BUILD_DIR="$SUBMODULE/build"
+BINARY="$BUILD_DIR/bin/visualizer"
+
+# ── 1. Ensure the submodule is initialised ────────────────────────
+if [ ! -f "$SUBMODULE/CMakeLists.txt" ]; then
+    printf "\033[33m[visualizer]\033[0m Initialising submodule...\n"
+    git -C "$ROOT" submodule update --init --recursive
+fi
+
+# ── 2. Ensure push_swap is built ──────────────────────────────────
+if [ ! -f "$ROOT/push_swap" ]; then
+    printf "\033[33m[visualizer]\033[0m Building push_swap first...\n"
+    make -C "$ROOT" --no-print-directory
+fi
+
+# ── 3. Build the visualizer if the binary is missing ─────────────
+if [ ! -f "$BINARY" ]; then
+    printf "\033[33m[visualizer]\033[0m Building visualizer (first run only)...\n"
+    cmake -S "$SUBMODULE" -B "$BUILD_DIR" -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_EXPORT_COMPILE_COMMANDS=OFF \
+        --no-warn-unused-cli -Wno-dev \
+        > /dev/null
+    cmake --build "$BUILD_DIR" --parallel "$(nproc 2>/dev/null || echo 4)"
+    printf "\033[32m[OK]\033[0m Visualizer built\n"
+fi
+
+# ── 4. Launch ─────────────────────────────────────────────────────
+exec "$BINARY"
