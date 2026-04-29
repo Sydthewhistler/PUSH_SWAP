@@ -69,6 +69,7 @@ void			rra(t_stack **stack);
 void			rrb(t_stack **stack);
 void			rrr(t_stack **a, t_stack **b);
 
+void			swap_top(t_stack **stack);
 void			sa(t_stack **stack);
 
 /* ── Median / quartile ───────────────────────────────────────────── */
