@@ -156,6 +156,8 @@ The program writes `Error` to stdout and exits with status `-1` when:
 
 A graphical visualizer is included as a git submodule ([o-reo/push_swap_visualizer](https://github.com/o-reo/push_swap_visualizer)).
 
+![demo](assets/demo.gif)
+
 ### First-time setup
 
 ```bash
@@ -166,17 +168,27 @@ git clone --recurse-submodules <your-repo-url>
 git submodule update --init --recursive
 ```
 
+<details>
+<summary>Linux dependencies (Debian/Ubuntu)</summary>
+
+```bash
+sudo apt-get update
+sudo apt-get install cmake g++ clang
+sudo apt-get install libgl1-mesa-dev libglu1-mesa-dev
+sudo apt-get install libx11-dev libxrandr-dev
+sudo apt-get install libudev-dev libfreetype-dev
+```
+
+</details>
+
 ### Launch
 
 ```bash
 ./visualizer        # builds everything on first run, then opens the GUI
+make visual         # equivalent shorthand via make
 ```
 
 The script automatically builds `push_swap` and the visualizer if not already compiled. Subsequent runs open the GUI directly.
-
-```bash
-make visual         # equivalent shorthand via make
-```
 
 ### Updating the visualizer
 
